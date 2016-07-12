@@ -171,7 +171,7 @@
            -segment_list_type "csv" \
            -segment_list_flags "live" \
            -segment_atclocktime 1 \
-              -acodec "$FORMAT" -map 0  -f segment \
+              -acodec "$FORMAT" -f segment \
               -segment_time   "$ARCHIVE_TIME" \
               -segment_format "$FORMAT" \
               -strftime 1     "$ARCHIVE_DIR/$FILE_NAME"
@@ -181,7 +181,7 @@
            -segment_list_type "csv" \
            -segment_list_flags "live" \
            -segment_atclocktime 1 \
-              -acodec "$FORMAT" -map 0  -f segment \
+              -acodec "$FORMAT" -f segment \
               -segment_time   "$SLICES_TIME" \
               -segment_format "$FORMAT" \
               -strftime 1     "$SLICES_DIR/$FILE_NAME"
@@ -196,13 +196,13 @@
 <span class="line_number">150 </span>        FILE_NAME<span class="sign">=</span><span class="quote">"${<a href="#robo5">config</a>[filename_prefix]}-${<a href="#robo5">config</a>[channel_name]}.${<a href="#robo5">config</a>[filename_suffix]}"</span>
 <span class="line_number">151 </span>
 <span class="line_number">152 </span>        <span class="comment">#Минимальная команда</span>
-<span class="line_number">153 </span>        CMD<span class="sign">=</span><span class="quote">"${<a href="#robo5">config</a>[cmd]} -reconnect 1 -i ${<a href="#robo5">config</a>[stream]} -f mp2"</span>
-<span class="line_number">154 </span>        <span class="comment"># " -f ${<a href="#robo5">config</a>[input_format]}"</span>
-<span class="line_number">155 </span>
-<span class="line_number">156 </span>        <span class="comment">#КОДИРОВАНИЕ</span>
-<span class="line_number">157 </span>        <span class="comment"># <a href="#robo2">enableOption</a> output_format -c %%</span>
-<span class="line_number">158 </span>
-<span class="line_number">159 </span>        <span class="comment">#ICECAST</span>
+<span class="line_number">153 </span>        CMD<span class="sign">=</span><span class="quote">"${<a href="#robo5">config</a>[cmd]} -i ${<a href="#robo5">config</a>[stream]} -f ${<a href="#robo5">config</a>[output_format]}"</span>
+<span class="line_number">154 </span>
+<span class="line_number">155 </span>        <span class="comment">#КОДИРОВАНИЕ</span>
+<span class="line_number">156 </span>        <span class="comment"># <a href="#robo2">enableOption</a> output_format -c %%</span>
+<span class="line_number">157 </span>
+<span class="line_number">158 </span>        <span class="comment">#ICECAST</span>
+<span class="line_number">159 </span>        <a href="#robo2">enableOption</a> input_channel <span class="sign">-</span>map <span class="sign">%</span><span class="sign">%</span>
 <span class="line_number">160 </span>        <a href="#robo2">enableOption</a> channel_name <span class="sign">\</span>
 <span class="line_number">161 </span>                <span class="sign">-</span>legacy_icecast 1 <span class="sign">\</span>
 <span class="line_number">162 </span>                <span class="sign">-</span>content_type audio<span class="sign">/</span>mpeg <span class="sign">\</span>
@@ -215,39 +215,41 @@
 <span class="line_number">169 </span>                icecast<span class="sign">:</span><span class="sign">/</span><span class="sign">/</span>source<span class="sign">:</span><span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>password<span class="sign">]</span><span class="keyword">}</span><span class="sign">@</span><span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>icecast<span class="sign">]</span><span class="keyword">}</span><span class="sign">/</span><span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>mountpoint<span class="sign">]</span><span class="keyword">}</span>
 <span class="line_number">170 </span>
 <span class="line_number">171 </span>        <span class="comment"># АРХИВ</span>
-<span class="line_number">172 </span>        <a href="#robo2">enableOption</a> archive_log <span class="sign">\</span>
-<span class="line_number">173 </span>                <span class="sign">-</span>segment_list <span class="sign">%</span><span class="sign">%</span> <span class="sign">\</span>
-<span class="line_number">174 </span>                <span class="sign">-</span>segment_list_entry_prefix <span class="quote">"${<a href="#robo5">config</a>[archive_dir]}"</span> <span class="sign">\</span>
-<span class="line_number">175 </span>                <span class="sign">-</span>segment_list_type csv <span class="sign">\</span>
-<span class="line_number">176 </span>                <span class="sign">-</span>segment_list_flags live
-<span class="line_number">177 </span>
-<span class="line_number">178 </span>        <span class="comment"># +СЕГМЕНТИРОВАНИЕ</span>
-<span class="line_number">179 </span>        <a href="#robo2">enableOption</a> archive_dir <span class="sign">\</span>
-<span class="line_number">180 </span>                <span class="sign">-</span>segment_atclocktime 1 <span class="sign">\</span>
-<span class="line_number">181 </span>                <span class="sign">-</span>acodec <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">-</span>map 0 <span class="sign">\</span>
-<span class="line_number">182 </span>                <span class="sign">-</span><span class="keyword">fi</span> segment <span class="sign">\</span>
-<span class="line_number">183 </span>                <span class="sign">-</span>segment_time   <span class="quote">"${<a href="#robo5">config</a>[archive_time]}"</span> <span class="sign">\</span>
-<span class="line_number">184 </span>                <span class="sign">-</span>segment_format <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">\</span>
-<span class="line_number">185 </span>                <span class="sign">-</span>strftime 1     <span class="quote">"${<a href="#robo5">config</a>[archive_dir]}/$FILE_NAME"</span>
-<span class="line_number">186 </span>
-<span class="line_number">187 </span>        <span class="comment"># АНАЛИЗ</span>
-<span class="line_number">188 </span>        <a href="#robo2">enableOption</a> slices_log <span class="sign">\</span>
-<span class="line_number">189 </span>                <span class="sign">-</span>segment_list <span class="sign">%</span><span class="sign">%</span> <span class="sign">\</span>
-<span class="line_number">190 </span>                <span class="sign">-</span>segment_list_entry_prefix <span class="quote">"${<a href="#robo5">config</a>[slices_dir]}"</span> <span class="sign">\</span>
-<span class="line_number">191 </span>                <span class="sign">-</span>segment_list_type csv <span class="sign">\</span>
-<span class="line_number">192 </span>                <span class="sign">-</span>segment_list_flags live
-<span class="line_number">193 </span>
-<span class="line_number">194 </span>        <span class="comment"># +СЕГМЕНТИРОВАНИЕ</span>
-<span class="line_number">195 </span>        <a href="#robo2">enableOption</a> slices_dir <span class="sign">\</span>
-<span class="line_number">196 </span>                <span class="sign">-</span>segment_atclocktime 1 <span class="sign">\</span>
-<span class="line_number">197 </span>                <span class="sign">-</span>acodec <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">-</span>map 0 <span class="sign">\</span>
-<span class="line_number">198 </span>                <span class="sign">-</span><span class="keyword">fi</span> segment <span class="sign">\</span>
-<span class="line_number">199 </span>                <span class="sign">-</span>segment_time   <span class="quote">"${<a href="#robo5">config</a>[slices_time]}"</span> <span class="sign">\</span>
-<span class="line_number">200 </span>                <span class="sign">-</span>segment_format <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">\</span>
-<span class="line_number">201 </span>                <span class="sign">-</span>strftime 1     <span class="quote">"${<a href="#robo5">config</a>[slices_dir]}/$FILE_NAME"</span>
-<span class="line_number">202 </span>
-<span class="line_number">203 </span>        <span class="keyword">echo</span> <span class="quote">"$CMD"</span>
-<span class="line_number">204 </span><span class="keyword">}</span>
+<span class="line_number">172 </span>        <a href="#robo2">enableOption</a> input_channel <span class="sign">-</span>map <span class="sign">%</span><span class="sign">%</span>
+<span class="line_number">173 </span>        <a href="#robo2">enableOption</a> archive_log <span class="sign">\</span>
+<span class="line_number">174 </span>                <span class="sign">-</span>segment_list <span class="sign">%</span><span class="sign">%</span> <span class="sign">\</span>
+<span class="line_number">175 </span>                <span class="sign">-</span>segment_list_entry_prefix <span class="quote">"${<a href="#robo5">config</a>[archive_dir]}"</span> <span class="sign">\</span>
+<span class="line_number">176 </span>                <span class="sign">-</span>segment_list_type csv <span class="sign">\</span>
+<span class="line_number">177 </span>                <span class="sign">-</span>segment_list_flags live
+<span class="line_number">178 </span>
+<span class="line_number">179 </span>        <span class="comment"># +СЕГМЕНТИРОВАНИЕ</span>
+<span class="line_number">180 </span>        <a href="#robo2">enableOption</a> archive_dir <span class="sign">\</span>
+<span class="line_number">181 </span>                <span class="sign">-</span>segment_atclocktime 1 <span class="sign">\</span>
+<span class="line_number">182 </span>                <span class="sign">-</span>acodec <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">\</span>
+<span class="line_number">183 </span>                <span class="sign">-</span><span class="keyword">fi</span> segment <span class="sign">\</span>
+<span class="line_number">184 </span>                <span class="sign">-</span>segment_time   <span class="quote">"${<a href="#robo5">config</a>[archive_time]}"</span> <span class="sign">\</span>
+<span class="line_number">185 </span>                <span class="sign">-</span>segment_format <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">\</span>
+<span class="line_number">186 </span>                <span class="sign">-</span>strftime 1     <span class="quote">"${<a href="#robo5">config</a>[archive_dir]}/$FILE_NAME"</span>
+<span class="line_number">187 </span>
+<span class="line_number">188 </span>        <span class="comment"># АНАЛИЗ</span>
+<span class="line_number">189 </span>        <a href="#robo2">enableOption</a> input_channel <span class="sign">-</span>map <span class="sign">%</span><span class="sign">%</span>
+<span class="line_number">190 </span>        <a href="#robo2">enableOption</a> slices_log <span class="sign">\</span>
+<span class="line_number">191 </span>                <span class="sign">-</span>segment_list <span class="sign">%</span><span class="sign">%</span> <span class="sign">\</span>
+<span class="line_number">192 </span>                <span class="sign">-</span>segment_list_entry_prefix <span class="quote">"${<a href="#robo5">config</a>[slices_dir]}"</span> <span class="sign">\</span>
+<span class="line_number">193 </span>                <span class="sign">-</span>segment_list_type csv <span class="sign">\</span>
+<span class="line_number">194 </span>                <span class="sign">-</span>segment_list_flags live
+<span class="line_number">195 </span>
+<span class="line_number">196 </span>        <span class="comment"># +СЕГМЕНТИРОВАНИЕ</span>
+<span class="line_number">197 </span>        <a href="#robo2">enableOption</a> slices_dir <span class="sign">\</span>
+<span class="line_number">198 </span>                <span class="sign">-</span>segment_atclocktime 1 <span class="sign">\</span>
+<span class="line_number">199 </span>                <span class="sign">-</span>acodec <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">\</span>
+<span class="line_number">200 </span>                <span class="sign">-</span><span class="keyword">fi</span> segment <span class="sign">\</span>
+<span class="line_number">201 </span>                <span class="sign">-</span>segment_time   <span class="quote">"${<a href="#robo5">config</a>[slices_time]}"</span> <span class="sign">\</span>
+<span class="line_number">202 </span>                <span class="sign">-</span>segment_format <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">\</span>
+<span class="line_number">203 </span>                <span class="sign">-</span>strftime 1     <span class="quote">"${<a href="#robo5">config</a>[slices_dir]}/$FILE_NAME"</span>
+<span class="line_number">204 </span>
+<span class="line_number">205 </span>        <span class="keyword">echo</span> <span class="quote">"$CMD"</span>
+<span class="line_number">206 </span><span class="keyword">}</span>
 </pre>
 
 <hr />
@@ -263,28 +265,29 @@
 <pre>    <a href="#robo2">enableOption</a>, <a href="#robo1">readOption</a>, <a href="#robo3">readXML</a>, <a href="#robo4">makeCMD</a>
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source"><span class="line_number">220 </span><span class="keyword">typeset</span> <span class="sign">-</span>A <strong>config</strong>
-<span class="line_number">221 </span>
-<span class="line_number">222 </span><strong>config</strong><span class="sign">=</span><span class="sign">(</span>
-<span class="line_number">223 </span>        <span class="sign">[</span>stream<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
-<span class="line_number">224 </span>        <span class="sign">[</span>icecast<span class="sign">]</span><span class="sign">=</span><span class="quote">"http://localhost:8000/"</span>
-<span class="line_number">225 </span>        <span class="sign">[</span>password<span class="sign">]</span><span class="sign">=</span><span class="quote">"hackme"</span>
-<span class="line_number">226 </span>        <span class="sign">[</span>channel_name<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
-<span class="line_number">227 </span>        <span class="sign">[</span>channel_descr<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
-<span class="line_number">228 </span>        <span class="sign">[</span>mountpoint<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
-<span class="line_number">229 </span>        <span class="sign">[</span>cmd<span class="sign">]</span><span class="sign">=</span><span class="quote">"ffmpeg"</span>
-<span class="line_number">230 </span>        <span class="sign">[</span>input_format<span class="sign">]</span><span class="sign">=</span><span class="quote">"mpegts"</span>
-<span class="line_number">231 </span>        <span class="sign">[</span>archive_dir<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
-<span class="line_number">232 </span>        <span class="sign">[</span>archive_time<span class="sign">]</span><span class="sign">=</span><span class="quote">"3600"</span>
-<span class="line_number">233 </span>        <span class="sign">[</span>archive_log<span class="sign">]</span><span class="sign">=</span><span class="quote">"/var/log/tuc01_archive.log"</span>
-<span class="line_number">234 </span>        <span class="sign">[</span>slices_dir<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
-<span class="line_number">235 </span>        <span class="sign">[</span>slices_time<span class="sign">]</span><span class="sign">=</span>10
-<span class="line_number">236 </span>        <span class="sign">[</span>slices_log<span class="sign">]</span><span class="sign">=</span><span class="quote">"/var/log/tuc01_slices.log"</span>
-<span class="line_number">237 </span>        <span class="sign">[</span>filename_prefix<span class="sign">]</span><span class="sign">=</span><span class="quote">"%Y-%m-%d_%H:%M:%S"</span>
-<span class="line_number">238 </span>        <span class="sign">[</span>filename_suffix<span class="sign">]</span><span class="sign">=</span><span class="quote">"mp2"</span>
-<span class="line_number">239 </span>        <span class="sign">[</span>output_format<span class="sign">]</span><span class="sign">=</span><span class="quote">"mp2"</span>
-<span class="line_number">240 </span>        <span class="sign">[</span>audio_bitrate<span class="sign">]</span><span class="sign">=</span><span class="quote">"256k"</span>
-<span class="line_number">241 </span><span class="sign">)</span>
+<pre class="source"><span class="line_number">222 </span><span class="keyword">typeset</span> <span class="sign">-</span>A <strong>config</strong>
+<span class="line_number">223 </span>
+<span class="line_number">224 </span><strong>config</strong><span class="sign">=</span><span class="sign">(</span>
+<span class="line_number">225 </span>        <span class="sign">[</span>stream<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">226 </span>        <span class="sign">[</span>icecast<span class="sign">]</span><span class="sign">=</span><span class="quote">"http://localhost:8000/"</span>
+<span class="line_number">227 </span>        <span class="sign">[</span>password<span class="sign">]</span><span class="sign">=</span><span class="quote">"hackme"</span>
+<span class="line_number">228 </span>        <span class="sign">[</span>channel_name<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">229 </span>        <span class="sign">[</span>channel_descr<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">230 </span>        <span class="sign">[</span>mountpoint<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">231 </span>        <span class="sign">[</span>cmd<span class="sign">]</span><span class="sign">=</span><span class="quote">"ffmpeg"</span>
+<span class="line_number">232 </span>        <span class="sign">[</span>input_format<span class="sign">]</span><span class="sign">=</span><span class="quote">"mpegts"</span>
+<span class="line_number">233 </span>        <span class="sign">[</span>input_channel<span class="sign">]</span><span class="sign">=</span><span class="quote">"0"</span>
+<span class="line_number">234 </span>        <span class="sign">[</span>archive_dir<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">235 </span>        <span class="sign">[</span>archive_time<span class="sign">]</span><span class="sign">=</span><span class="quote">"3600"</span>
+<span class="line_number">236 </span>        <span class="sign">[</span>archive_log<span class="sign">]</span><span class="sign">=</span><span class="quote">"/var/log/tuc01_archive.log"</span>
+<span class="line_number">237 </span>        <span class="sign">[</span>slices_dir<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">238 </span>        <span class="sign">[</span>slices_time<span class="sign">]</span><span class="sign">=</span>10
+<span class="line_number">239 </span>        <span class="sign">[</span>slices_log<span class="sign">]</span><span class="sign">=</span><span class="quote">"/var/log/tuc01_slices.log"</span>
+<span class="line_number">240 </span>        <span class="sign">[</span>filename_prefix<span class="sign">]</span><span class="sign">=</span><span class="quote">"%Y-%m-%d_%H:%M:%S"</span>
+<span class="line_number">241 </span>        <span class="sign">[</span>filename_suffix<span class="sign">]</span><span class="sign">=</span><span class="quote">"mp2"</span>
+<span class="line_number">242 </span>        <span class="sign">[</span>output_format<span class="sign">]</span><span class="sign">=</span><span class="quote">"mp2"</span>
+<span class="line_number">243 </span>        <span class="sign">[</span>audio_bitrate<span class="sign">]</span><span class="sign">=</span><span class="quote">"256k"</span>
+<span class="line_number">244 </span><span class="sign">)</span>
 </pre>
 
 <hr />
@@ -365,7 +368,7 @@
 </pre>
 <p></p>
 <p class="item_name">SOURCE</p>
-<pre class="source"><span class="line_number">305 </span><strong>SETTINGS</strong><span class="sign">=</span><span class="quote">"$1"</span>
+<pre class="source"><span class="line_number">308 </span><strong>SETTINGS</strong><span class="sign">=</span><span class="quote">"$1"</span>
 </pre>
 
 <hr />
@@ -377,30 +380,30 @@
 <pre>    <a href="#robo0">streamsaver</a>
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source"><span class="line_number">316 </span><span class="comment">#Проверка на наличие файла настроек</span>
-<span class="line_number">317 </span><span class="keyword">if</span> <span class="sign">[</span> <span class="sign">-</span>z <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span> <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
-<span class="line_number">318 </span>        <span class="keyword">echo</span> <span class="quote">"USAGE: $(basename $0) &lt;settings.xml&gt;"</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
-<span class="line_number">319 </span>        <span class="keyword">exit</span> 1
-<span class="line_number">320 </span><span class="keyword">elif</span> <span class="sign">[</span> <span class="keyword">!</span> <span class="sign">-</span>r <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span> <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
-<span class="line_number">321 </span>        <span class="keyword">echo</span> <span class="quote">"Unable open file $1."</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
-<span class="line_number">322 </span>        <span class="keyword">echo</span> <span class="quote">"USAGE: $(basename $0) &lt;settings.xml&gt;"</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
-<span class="line_number">323 </span>        <span class="keyword">exit</span> 1
-<span class="line_number">324 </span><span class="keyword">fi</span>
-<span class="line_number">325 </span>
-<span class="line_number">326 </span><span class="comment">#Чтение настроек</span>
-<span class="line_number">327 </span><a href="#robo3">readXML</a> <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span>
+<pre class="source"><span class="line_number">319 </span><span class="comment">#Проверка на наличие файла настроек</span>
+<span class="line_number">320 </span><span class="keyword">if</span> <span class="sign">[</span> <span class="sign">-</span>z <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span> <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
+<span class="line_number">321 </span>        <span class="keyword">echo</span> <span class="quote">"USAGE: $(basename $0) &lt;settings.xml&gt;"</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
+<span class="line_number">322 </span>        <span class="keyword">exit</span> 1
+<span class="line_number">323 </span><span class="keyword">elif</span> <span class="sign">[</span> <span class="keyword">!</span> <span class="sign">-</span>r <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span> <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
+<span class="line_number">324 </span>        <span class="keyword">echo</span> <span class="quote">"Unable open file $1."</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
+<span class="line_number">325 </span>        <span class="keyword">echo</span> <span class="quote">"USAGE: $(basename $0) &lt;settings.xml&gt;"</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
+<span class="line_number">326 </span>        <span class="keyword">exit</span> 1
+<span class="line_number">327 </span><span class="keyword">fi</span>
 <span class="line_number">328 </span>
-<span class="line_number">329 </span><span class="comment">#Создание директорий хранения файлов, если требуется</span>
-<span class="line_number">330 </span><span class="keyword">mkdir</span> <span class="sign">-</span>p <span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>archive_dir<span class="sign">]</span><span class="keyword">}</span>
-<span class="line_number">331 </span><span class="keyword">mkdir</span> <span class="sign">-</span>p <span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>slices_dir<span class="sign">]</span><span class="keyword">}</span>
-<span class="line_number">332 </span>
-<span class="line_number">333 </span><span class="comment">#Создание команды оцифровки сигнала</span>
-<span class="line_number">334 </span><a href="#robo4">makeCMD</a>
+<span class="line_number">329 </span><span class="comment">#Чтение настроек</span>
+<span class="line_number">330 </span><a href="#robo3">readXML</a> <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span>
+<span class="line_number">331 </span>
+<span class="line_number">332 </span><span class="comment">#Создание директорий хранения файлов, если требуется</span>
+<span class="line_number">333 </span><span class="keyword">mkdir</span> <span class="sign">-</span>p <span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>archive_dir<span class="sign">]</span><span class="keyword">}</span>
+<span class="line_number">334 </span><span class="keyword">mkdir</span> <span class="sign">-</span>p <span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>slices_dir<span class="sign">]</span><span class="keyword">}</span>
+<span class="line_number">335 </span>
+<span class="line_number">336 </span><span class="comment">#Создание команды оцифровки сигнала</span>
+<span class="line_number">337 </span><a href="#robo4">makeCMD</a>
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./streamsaver with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.41 on Tue Jul 12 2016 14:44:43
+<p>Generated from ./streamsaver with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.41 on Tue Jul 12 2016 15:21:57
 </p>
 </div> <!-- footer -->
 </body>
