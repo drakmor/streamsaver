@@ -18,7 +18,7 @@
 	<!-- Формат входного потока -->
 	<input_format>mp2</input_format>
 	<!-- Программа/канал из потока -->
-	<input_channel>0:p:4098</input_channel>
+	<input_channel>p:4098</input_channel>
 	<!-- Директория для сохранения архивных файлов -->
 	<archive_dir>/tmp/RT/FILES/archive/TK04/CH4098/</archive_dir>
 	<!-- Длительность архивных файлов в секундах -->
