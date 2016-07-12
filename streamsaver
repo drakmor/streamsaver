@@ -175,7 +175,7 @@ makeCMD() {
 	FILE_NAME="${config[filename_prefix]}-${config[channel_name]}-CH${config[channel_number]}.${config[filename_suffix]}"
 
 	#Минимальная команда
-	CMD="${config[cmd]} -i ${config[stream]} -f ${config[output_format]}"
+	CMD="${config[cmd]} -f ${config[input_format]} -i ${config[stream]} -f ${config[output_format]}"
 
 	#КОДИРОВАНИЕ
 	# enableOption output_format -c %%
@@ -256,13 +256,13 @@ config=(
 	[mountpoint]=""
 	[cmd]="ffmpeg"
 	[input_format]="mpegts"
-	[input_channel]="0"
+	[input_channel]=""
 	[archive_dir]=""
-	[archive_time]="3600"
-	[archive_log]="/var/log/tuc01_archive.log"
+	[archive_time]=""
+	[archive_log]=""
 	[slices_dir]=""
-	[slices_time]=10
-	[slices_log]="/var/log/tuc01_slices.log"
+	[slices_time]=""
+	[slices_log]=""
 	[filename_prefix]="%Y-%m-%d_%H:%M:%S"
 	[filename_suffix]="mp2"
 	[output_format]="mp2"
