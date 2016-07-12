@@ -1,0 +1,24 @@
+<xml>
+	<!-- Название канала -->
+	<channel_name>DAB#2</channel_name>
+	<!-- Номер канала -->
+	<channel_number>01</channel_number>
+	<!-- Описание канала -->
+	<channel_descr>Test_channel_DAB#2</channel_descr>
+	<!-- Входящий поток  -->
+	<stream>pipe:0</stream>
+	<!-- Icecast для вывода -->
+	<icecast>localhost:2281</icecast>
+	<!-- Пароль для доступа к Icecast -->
+	<password>hackme</password>
+	<!-- Точка подключения канала -->
+	<mountpoint>stream_dab_02</mountpoint>
+	<!-- Команда получения сигнала -->
+	<cmd>rtl_fm -f 190.640M -M fm -s 170k -A std  -l 0 -E deemp -r 44.1k | ffmpeg</cmd>
+	<!-- Формат входного потока -->
+	<input_format>s16le</input_format>
+	<!-- Формат аудиофайлов -->
+	<output_format>mp2</output_format>
+	<!-- Битрейт аудиофайлов -->
+	<audio_bitrate>256k</audio_bitrate>
+</xml>
