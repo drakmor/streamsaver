@@ -181,7 +181,7 @@ makeCMD() {
 	# enableOption output_format -c %%
 
 	#ICECAST
-	enableOption input_channel -map 0:%%
+	enableOption input_channel -map %%
 	enableOption channel_name \
 		-legacy_icecast 1 \
 		-content_type audio/mpeg \
@@ -194,7 +194,7 @@ makeCMD() {
 		icecast://source:${config[password]}@${config[icecast]}/${config[mountpoint]}
 
 	# АРХИВ
-	enableOption input_channel -map 0:%%
+	enableOption input_channel -map %%
 	enableOption archive_log \
 		-segment_list %% \
 		-segment_list_entry_prefix "${config[archive_dir]}" \
@@ -211,7 +211,7 @@ makeCMD() {
 		-strftime 1     "${config[archive_dir]}/$FILE_NAME"
 
 	# АНАЛИЗ
-	enableOption input_channel -map 0:%%
+	enableOption input_channel -map %%
 	enableOption slices_log \
 		-segment_list %% \
 		-segment_list_entry_prefix "${config[slices_dir]}" \
