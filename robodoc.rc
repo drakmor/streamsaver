@@ -1,0 +1,166 @@
+items:
+#
+# CUSTOM
+#
+    DATA
+    DEFAULT VALUE
+    GUI
+    INIT VALUE
+    NAMESPACE
+    PACKAGES
+    RESOURCE
+    STRUCTURE
+    USED GLOBAL VARIABLES
+    USED VARIABLES
+    USER HELP
+    VARIABLE
+    VARIABLES
+    VERSION
+#
+# DEFAULT
+#
+    ARGUMENTS
+    ATTRIBUTES
+    AUTHOR
+    BUGS
+    CHILDREN
+    COMMANDS
+    COPYRIGHT
+    CREATION DATE
+    DERIVED BY
+    DERIVED FROM
+    DESCRIPTION
+    DIAGNOSTICS
+    ERRORS
+    EXAMPLE
+    FUNCTION
+    HISTORY
+    IDEAS
+    INPUTS
+    METHODS
+    MODIFICATION HISTORY
+    NAME
+    NEW ATTRIBUTES
+    NEW METHODS
+    NOTES
+    OPTIONS
+    OUTPUT
+    PARAMETERS
+    PARENTS
+    PORTABILITY
+    PURPOSE
+    RESULT
+    RETURN VALUE
+    SEE ALSO
+    SIDE EFFECTS
+    SOURCE
+    SWITCHES
+    SYNOPSIS
+    TAGS
+    TODO
+    USAGE
+    USED BY
+    USES
+    WARNINGS
+ignore items:
+item order:
+    FUNCTION
+    SYNOPSIS
+    INPUTS
+source items:
+    SOURCE
+    DATA
+preformatted items:
+    INPUTS
+format items:
+    PORTABILITY
+    FUNCTION
+    DESCRIPTION
+    ARGUMENTS
+    PACKAGES
+    USED GLOBAL VARIABLES
+    USED VARIABLES
+    NOTES
+    VARIABLES
+    NAMESPACE
+    BUGS
+    TODO
+options:
+    --src .
+    --doc ./doc
+    --html
+    --multidoc
+    --charset utf-8
+    --nosort
+    --sections
+    --source_line_numbers
+    --index
+    --tabsize 8
+    --syntaxcolors_enable quotes,squotes,line_comments,block_comments,keywords,non_alpha
+headertypes:
+    F  Files                     robo_files
+    a  Aliases                   robo_aliases
+    I  Interpretators            robo_interps
+    p  Packages                  robo_packages
+    G  "Global variables"        robo_globals
+    n  Namespaces                robo_namespaces
+    r  Resources                 robo_resources
+    c  "Control flow structures" robo_control_structures
+    t  Toplevel                  tobo_toplevel
+ignore files:
+    README
+    CVS
+    robodoc.rc
+    config
+    *.xml
+    *.bak
+    *.git
+    *~
+accept files:
+    streamsaver
+header markers:
+    #****
+remark markers:
+    #
+end markers:
+    #****
+header separate characters:
+    ,
+header ignore characters:
+    [
+    ]
+    #
+remark begin markers:
+remark end markers:
+source line comments:
+    #
+keywords:
+    if
+    then
+    else
+    elif
+    fi
+    case
+    esac
+    for
+    select
+    while
+    until
+    do
+    done
+    in
+    function
+    time
+    {
+    }
+    !
+    [[
+    ]]
+    coproc
+    echo
+    ffmpeg
+    mkdir
+    grep
+    exit
+    typeset
+

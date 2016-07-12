@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<title>./streamsaver</title>
+<!-- Source: ./streamsaver -->
+<!-- Generated with ROBODoc Version 4.99.41 (Jul  2 2011) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc"></a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./robo_sourcefiles.html#top">Sourcefiles</a>
+<a class="menuitem" href="./masterindex.html#top">Index</a>
+<a class="menuitem" href="./robo_files.html#top">Files</a>
+<a class="menuitem" href="./robo_functions.html#top">Functions</a>
+<a class="menuitem" href="./tobo_toplevel.html#top">Toplevel</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<hr />
+<a name="ffmpeg2fstreamsaver"></a>
+<a name="robo0"></a><h2>ffmpeg/streamsaver [ Files ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_files.html#robo_top_of_doc">Files</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <strong>streamsaver</strong> - обработчик аудиопотоков с нарезкой их в файлы и
+    ретрансляцией на icecast
+</pre>
+<p class="item_name">VERSION</p>
+<pre>    1.0
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<p>    Сценарий принимает аудиопоток с оборудования, по UDP или TCP,
+    фрагментирует его на отрезки заданной длины для последующего хранения и
+    анализа, а также ретранслирует поток на сервер радиовещания icecast для
+    прослушивания аудио конечным пользователем.
+</p>
+<p class="item_name">USAGE</p>
+<pre>    <strong>streamsaver</strong> &lt;файл настроек&gt;
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<ul><li>    &lt;файл настроек&gt; - xml-файл с описанием входящего и выходящего потоков и
+      правилами фрагментирования записей.
+</li>
+</ul>
+<p></p>
+
+<hr />
+<a name="streamsaver2freadOption"></a>
+<a name="robo1"></a><h2>streamsaver/readOption [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">streamsaver</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <strong>readOption</strong> - получение значения опции из файла настроек
+</pre>
+<p class="item_name">USAGE</p>
+<pre>    <strong>readOption</strong> &lt;опция&gt; &lt;файл&gt;
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<ul><li>    опция - имя опции
+</li>
+<li>    файл - xml-файл с настройками
+</li>
+</ul>
+<p></p>
+<p class="item_name">RESULT</p>
+<pre>    Значение параметра при наличии искомой опции в xml-файле или значение по
+    умолчанию, которое задаётся при инициализации переменной <a href="#robo5">config</a>.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">45 </span><strong>readOption</strong><span class="sign">(</span><span class="sign">)</span> <span class="keyword">{</span>
+<span class="line_number">46 </span>        cfg<span class="sign">=</span><span class="sign">$</span><span class="sign">(</span><span class="sign">\</span><span class="keyword">grep</span> <span class="sign">-</span>oPm1 <span class="quote">"(?&lt;=&lt;$1&gt;)[^&lt;]+"</span> <span class="quote">"$2"</span><span class="sign">)</span>
+<span class="line_number">47 </span>        
+<span class="line_number">48 </span>        <span class="keyword">if</span> <span class="sign">[</span> <span class="keyword">!</span> <span class="sign">-</span>z <span class="quote">"$cfg"</span> <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
+<span class="line_number">49 </span>                <a href="#robo5">config</a><span class="sign">[</span><span class="sign">$</span>1<span class="sign">]</span><span class="sign">=</span><span class="sign">$</span>cfg
+<span class="line_number">50 </span>        <span class="keyword">fi</span>
+<span class="line_number">51 </span><span class="keyword">}</span>
+</pre>
+
+<hr />
+<a name="streamsaver2fenableOption"></a>
+<a name="robo2"></a><h2>streamsaver/enableOption [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">streamsaver</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <strong>enableOption</strong> - добавление опции к команде ffmpeg
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<p>    Процедура включает опцию, если в конфигурационном файле имеется
+    соответствующая настройка.
+</p>
+<p class="item_name">USAGE</p>
+<pre>    <strong>enableOption</strong> &lt;опция&gt;
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<ul><li>    опция - имя опции из массива настроек <a href="#robo5">config</a>.
+</li>
+</ul>
+<p></p>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">71 </span><strong>enableOption</strong> <span class="sign">(</span><span class="sign">)</span> <span class="keyword">{</span>
+<span class="line_number">72 </span>        <span class="keyword">if</span> <span class="sign">[</span> <span class="keyword">!</span> <span class="sign">-</span>z <span class="quote">"${<a href="#robo5">config</a>[$1]}"</span> <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
+<span class="line_number">73 </span>                CMD<span class="sign">+</span><span class="sign">=</span><span class="quote">" $(echo $* | cut -d ' ' -f 2- | sed "</span>s<span class="sign">|</span><span class="sign">%</span><span class="sign">%</span><span class="sign">|</span><span class="sign">\</span><span class="sign">"</span><span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span><span class="sign">$</span>1<span class="sign">]</span><span class="keyword">}</span><span class="sign">\</span><span class="sign">"</span><span class="sign">|</span>g<span class="quote">")"</span>
+<span class="line_number">74 </span>        <span class="keyword">fi</span>
+<span class="line_number">75 </span><span class="keyword">}</span>
+</pre>
+
+<hr />
+<a name="streamsaver2freadXML"></a>
+<a name="robo3"></a><h2>streamsaver/readXML [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">streamsaver</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <strong>readXML</strong> - чтение файла настроек
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<p>    Получение настроек из xml-файла.
+</p>
+<p class="item_name">USAGE</p>
+<pre>    <strong>readXML</strong> &lt;xml&gt;
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<ul><li>    xml - файл настроек.
+</li>
+</ul>
+<p></p>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">94 </span><strong>readXML</strong><span class="sign">(</span><span class="sign">)</span> <span class="keyword">{</span>
+<span class="line_number">95 </span>        <span class="comment">#Чтение настроек из файла</span>
+<span class="line_number">96 </span>        <span class="keyword">for</span> option <span class="keyword">in</span> <span class="sign">$</span><span class="keyword">{</span><span class="sign">!</span><a href="#robo5">config</a><span class="sign">[</span><span class="sign">*</span><span class="sign">]</span><span class="keyword">}</span><span class="sign">;</span> <span class="keyword">{</span>
+<span class="line_number">97 </span>                <a href="#robo1">readOption</a> <span class="quote">"$option"</span> <span class="quote">"$1"</span>
+<span class="line_number">98 </span>        <span class="keyword">}</span>
+<span class="line_number">99 </span><span class="keyword">}</span>
+</pre>
+
+<hr />
+<a name="streamsaver2fmakeCMD"></a>
+<a name="robo4"></a><h2>streamsaver/makeCMD [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">streamsaver</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <strong>makeCMD</strong> - создание команды для оцифровки сигнала
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<p>    Процедура составляет команду ffmpeg, включая опции, если они заданы в
+    конфигурационном файле или указаны значения по умолчанию в массиве
+    настроек <a href="#robo5">config</a>.
+</p>
+
+<p>    Эталонные настройки ffmpeg
+</p>
+
+<pre>        ffmpeg  -reconnect 1 \
+           \
+           -i  "${<a href="#robo5">config</a>[stream]}" \
+              -legacy_icecast 1 \
+              -content_type audio/mpeg \
+              -ice_name "Имя канала" \
+              -ice_description "Описание канала" \
+              icecast://source:${<a href="#robo5">config</a>[password]}@${<a href="#robo5">config</a>[icecast]}/${<a href="#robo5">config</a>[mountpoint]} \
+           \
+           -segment_list "./files_archive.csv" \
+           -segment_list_entry_prefix "$ARCHIVE_DIR" \
+           -segment_list_type "csv" \
+           -segment_list_flags "live" \
+           -segment_atclocktime 1 \
+              -acodec "$FORMAT" -map 0  -f segment \
+              -segment_time   "$ARCHIVE_TIME" \
+              -segment_format "$FORMAT" \
+              -strftime 1     "$ARCHIVE_DIR/$FILE_NAME"
+           \
+           -segment_list "./files_slices.csv" \
+           -segment_list_entry_prefix "$ARCHIVE_DIR" \
+           -segment_list_type "csv" \
+           -segment_list_flags "live" \
+           -segment_atclocktime 1 \
+              -acodec "$FORMAT" -map 0  -f segment \
+              -segment_time   "$SLICES_TIME" \
+              -segment_format "$FORMAT" \
+              -strftime 1     "$SLICES_DIR/$FILE_NAME"
+</pre>
+<p></p>
+<p class="item_name">RESULT</p>
+<pre>    Команда ffmpeg, которую можно передать на выполнение.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">148 </span><strong>makeCMD</strong><span class="sign">(</span><span class="sign">)</span> <span class="keyword">{</span>
+<span class="line_number">149 </span>        <span class="comment">#Правило именования файлов</span>
+<span class="line_number">150 </span>        FILE_NAME<span class="sign">=</span><span class="quote">"${<a href="#robo5">config</a>[filename_prefix]}-${<a href="#robo5">config</a>[channel_name]}.${<a href="#robo5">config</a>[filename_suffix]}"</span>
+<span class="line_number">151 </span>
+<span class="line_number">152 </span>        <span class="comment">#Минимальная команда</span>
+<span class="line_number">153 </span>        CMD<span class="sign">=</span><span class="quote">"${<a href="#robo5">config</a>[cmd]} -reconnect 1 -i ${<a href="#robo5">config</a>[stream]} -f mp2"</span>
+<span class="line_number">154 </span>        <span class="comment"># " -f ${<a href="#robo5">config</a>[input_format]}"</span>
+<span class="line_number">155 </span>
+<span class="line_number">156 </span>        <span class="comment">#КОДИРОВАНИЕ</span>
+<span class="line_number">157 </span>        <span class="comment"># <a href="#robo2">enableOption</a> output_format -c %%</span>
+<span class="line_number">158 </span>
+<span class="line_number">159 </span>        <span class="comment">#ICECAST</span>
+<span class="line_number">160 </span>        <a href="#robo2">enableOption</a> channel_name <span class="sign">\</span>
+<span class="line_number">161 </span>                <span class="sign">-</span>legacy_icecast 1 <span class="sign">\</span>
+<span class="line_number">162 </span>                <span class="sign">-</span>content_type audio<span class="sign">/</span>mpeg <span class="sign">\</span>
+<span class="line_number">163 </span>                <span class="sign">-</span>ice_name <span class="sign">%</span><span class="sign">%</span>
+<span class="line_number">164 </span>
+<span class="line_number">165 </span>        <a href="#robo2">enableOption</a> channel_descr <span class="sign">\</span>
+<span class="line_number">166 </span>                <span class="sign">-</span>ice_description <span class="sign">%</span><span class="sign">%</span>
+<span class="line_number">167 </span>
+<span class="line_number">168 </span>        <a href="#robo2">enableOption</a> icecast <span class="sign">\</span>
+<span class="line_number">169 </span>                icecast<span class="sign">:</span><span class="sign">/</span><span class="sign">/</span>source<span class="sign">:</span><span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>password<span class="sign">]</span><span class="keyword">}</span><span class="sign">@</span><span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>icecast<span class="sign">]</span><span class="keyword">}</span><span class="sign">/</span><span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>mountpoint<span class="sign">]</span><span class="keyword">}</span>
+<span class="line_number">170 </span>
+<span class="line_number">171 </span>        <span class="comment"># АРХИВ</span>
+<span class="line_number">172 </span>        <a href="#robo2">enableOption</a> archive_log <span class="sign">\</span>
+<span class="line_number">173 </span>                <span class="sign">-</span>segment_list <span class="sign">%</span><span class="sign">%</span> <span class="sign">\</span>
+<span class="line_number">174 </span>                <span class="sign">-</span>segment_list_entry_prefix <span class="quote">"${<a href="#robo5">config</a>[archive_dir]}"</span> <span class="sign">\</span>
+<span class="line_number">175 </span>                <span class="sign">-</span>segment_list_type csv <span class="sign">\</span>
+<span class="line_number">176 </span>                <span class="sign">-</span>segment_list_flags live
+<span class="line_number">177 </span>
+<span class="line_number">178 </span>        <span class="comment"># +СЕГМЕНТИРОВАНИЕ</span>
+<span class="line_number">179 </span>        <a href="#robo2">enableOption</a> archive_dir <span class="sign">\</span>
+<span class="line_number">180 </span>                <span class="sign">-</span>segment_atclocktime 1 <span class="sign">\</span>
+<span class="line_number">181 </span>                <span class="sign">-</span>acodec <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">-</span>map 0 <span class="sign">\</span>
+<span class="line_number">182 </span>                <span class="sign">-</span><span class="keyword">fi</span> segment <span class="sign">\</span>
+<span class="line_number">183 </span>                <span class="sign">-</span>segment_time   <span class="quote">"${<a href="#robo5">config</a>[archive_time]}"</span> <span class="sign">\</span>
+<span class="line_number">184 </span>                <span class="sign">-</span>segment_format <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">\</span>
+<span class="line_number">185 </span>                <span class="sign">-</span>strftime 1     <span class="quote">"${<a href="#robo5">config</a>[archive_dir]}/$FILE_NAME"</span>
+<span class="line_number">186 </span>
+<span class="line_number">187 </span>        <span class="comment"># АНАЛИЗ</span>
+<span class="line_number">188 </span>        <a href="#robo2">enableOption</a> slices_log <span class="sign">\</span>
+<span class="line_number">189 </span>                <span class="sign">-</span>segment_list <span class="sign">%</span><span class="sign">%</span> <span class="sign">\</span>
+<span class="line_number">190 </span>                <span class="sign">-</span>segment_list_entry_prefix <span class="quote">"${<a href="#robo5">config</a>[slices_dir]}"</span> <span class="sign">\</span>
+<span class="line_number">191 </span>                <span class="sign">-</span>segment_list_type csv <span class="sign">\</span>
+<span class="line_number">192 </span>                <span class="sign">-</span>segment_list_flags live
+<span class="line_number">193 </span>
+<span class="line_number">194 </span>        <span class="comment"># +СЕГМЕНТИРОВАНИЕ</span>
+<span class="line_number">195 </span>        <a href="#robo2">enableOption</a> slices_dir <span class="sign">\</span>
+<span class="line_number">196 </span>                <span class="sign">-</span>segment_atclocktime 1 <span class="sign">\</span>
+<span class="line_number">197 </span>                <span class="sign">-</span>acodec <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">-</span>map 0 <span class="sign">\</span>
+<span class="line_number">198 </span>                <span class="sign">-</span><span class="keyword">fi</span> segment <span class="sign">\</span>
+<span class="line_number">199 </span>                <span class="sign">-</span>segment_time   <span class="quote">"${<a href="#robo5">config</a>[slices_time]}"</span> <span class="sign">\</span>
+<span class="line_number">200 </span>                <span class="sign">-</span>segment_format <span class="quote">"${<a href="#robo5">config</a>[output_format]}"</span> <span class="sign">\</span>
+<span class="line_number">201 </span>                <span class="sign">-</span>strftime 1     <span class="quote">"${<a href="#robo5">config</a>[slices_dir]}/$FILE_NAME"</span>
+<span class="line_number">202 </span>
+<span class="line_number">203 </span>        <span class="keyword">echo</span> <span class="quote">"$CMD"</span>
+<span class="line_number">204 </span><span class="keyword">}</span>
+</pre>
+
+<hr />
+<a name="streamsaver2fconfig"></a>
+<a name="robo5"></a><h2>streamsaver/config [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">streamsaver</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">VARIABLE</p>
+<pre>    <strong>config</strong> - массив настроек, содержащий значения по-умолчанию.
+    Настройки описаны в секции <a href="#robo6">SETTINGS</a>.
+</pre>
+<p class="item_name">USED BY</p>
+<pre>    <a href="#robo2">enableOption</a>, <a href="#robo1">readOption</a>, <a href="#robo3">readXML</a>, <a href="#robo4">makeCMD</a>
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">220 </span><span class="keyword">typeset</span> <span class="sign">-</span>A <strong>config</strong>
+<span class="line_number">221 </span>
+<span class="line_number">222 </span><strong>config</strong><span class="sign">=</span><span class="sign">(</span>
+<span class="line_number">223 </span>        <span class="sign">[</span>stream<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">224 </span>        <span class="sign">[</span>icecast<span class="sign">]</span><span class="sign">=</span><span class="quote">"http://localhost:8000/"</span>
+<span class="line_number">225 </span>        <span class="sign">[</span>password<span class="sign">]</span><span class="sign">=</span><span class="quote">"hackme"</span>
+<span class="line_number">226 </span>        <span class="sign">[</span>channel_name<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">227 </span>        <span class="sign">[</span>channel_descr<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">228 </span>        <span class="sign">[</span>mountpoint<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">229 </span>        <span class="sign">[</span>cmd<span class="sign">]</span><span class="sign">=</span><span class="quote">"ffmpeg"</span>
+<span class="line_number">230 </span>        <span class="sign">[</span>input_format<span class="sign">]</span><span class="sign">=</span><span class="quote">"mpegts"</span>
+<span class="line_number">231 </span>        <span class="sign">[</span>archive_dir<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">232 </span>        <span class="sign">[</span>archive_time<span class="sign">]</span><span class="sign">=</span><span class="quote">"3600"</span>
+<span class="line_number">233 </span>        <span class="sign">[</span>archive_log<span class="sign">]</span><span class="sign">=</span><span class="quote">"/var/log/tuc01_archive.log"</span>
+<span class="line_number">234 </span>        <span class="sign">[</span>slices_dir<span class="sign">]</span><span class="sign">=</span><span class="quote">""</span>
+<span class="line_number">235 </span>        <span class="sign">[</span>slices_time<span class="sign">]</span><span class="sign">=</span>10
+<span class="line_number">236 </span>        <span class="sign">[</span>slices_log<span class="sign">]</span><span class="sign">=</span><span class="quote">"/var/log/tuc01_slices.log"</span>
+<span class="line_number">237 </span>        <span class="sign">[</span>filename_prefix<span class="sign">]</span><span class="sign">=</span><span class="quote">"%Y-%m-%d_%H:%M:%S"</span>
+<span class="line_number">238 </span>        <span class="sign">[</span>filename_suffix<span class="sign">]</span><span class="sign">=</span><span class="quote">"mp2"</span>
+<span class="line_number">239 </span>        <span class="sign">[</span>output_format<span class="sign">]</span><span class="sign">=</span><span class="quote">"mp2"</span>
+<span class="line_number">240 </span>        <span class="sign">[</span>audio_bitrate<span class="sign">]</span><span class="sign">=</span><span class="quote">"256k"</span>
+<span class="line_number">241 </span><span class="sign">)</span>
+</pre>
+
+<hr />
+<a name="streamsaver2fSETTINGS"></a>
+<a name="robo6"></a><h2>streamsaver/SETTINGS [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">streamsaver</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">VARIABLE</p>
+<pre>    <strong>SETTINGS</strong> - файл настроек
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<p>    Переменная хранит имя файла настроек, который содержит параметры,
+    перечисленные в массиве опций <a href="#robo5">config</a>, в формате XML. При отсутствии
+    параметра или пустом значении соответствующие флаги а аргументы не
+    добавляются в итоговую команду ffmpeg. Таким образом, например, можно
+    включать или отключать ведение журнала сохранения аудиозаписей, просто
+    указывая или удаляя параметр archive_log.
+</p>
+
+<p>    Формат файла настроек следующий:
+</p>
+<pre>       &lt;xml&gt;
+       &lt;!-- Название канала --&gt;
+       &lt;channel_name&gt;&lt;/channel_name&gt;
+       &lt;!-- Описание канала --&gt;
+       &lt;channel_descr&gt;Тестовый_канал&lt;/channel_descr&gt;
+       &lt;!-- Входящий поток  --&gt;
+       &lt;stream&gt;<a href="http://localhost:8000/tuc01</stream>">http://localhost:8000/tuc01</stream></a>
+       &lt;!-- Icecast для вывода --&gt;
+       &lt;icecast&gt;localhost:8000&lt;/icecast&gt;
+       &lt;!-- Пароль для доступа к Icecast --&gt;
+       &lt;password&gt;hackme&lt;/password&gt;
+       &lt;!-- Точка подключения канала --&gt;
+       &lt;mountpoint&gt;tuc02&lt;/mountpoint&gt;
+</pre>
+<p>    
+</p>
+<pre>       &lt;!-- Команда получения сигнала --&gt;
+       &lt;cmd&gt;ffmpeg&lt;/cmd&gt;
+</pre>
+<p>    
+</p>
+<pre>       &lt;!-- Формат входного потока --&gt;
+       &lt;input_format&gt;mp2 -map 0:0&lt;/input_format&gt;
+</pre>
+<p>    
+</p>
+<pre>       &lt;!-- Директория для сохранения архивных файлов --&gt;
+       &lt;archive_dir&gt;FILES/archive/&lt;/archive_dir&gt;
+       &lt;!-- Длительность архивных файлов в секундах --&gt;
+       &lt;archive_time&gt;3600&lt;/archive_time&gt;
+       &lt;!-- Файл журнала обработки архивных записей --&gt;
+       &lt;archive_log&gt;FILES/archive.log&lt;/archive_log&gt;
+</pre>
+<p>    
+</p>
+<pre>       &lt;!-- Директория для сохранения фрагментов на анализ --&gt;
+       &lt;slices_dir&gt;FILES/fragments/&lt;/slices_dir&gt;
+       &lt;!-- Длительность фрагментов для анализа в секундах --&gt;
+       &lt;slices_time&gt;10&lt;/slices_time&gt;
+       &lt;!-- Файл журнала обработки фрагментов на анализ --&gt;
+       &lt;slices_log&gt;FILES/fragments.log&lt;/slices_log&gt;
+</pre>
+<p>    
+</p>
+<pre>       &lt;!-- Префикс имени файла --&gt;
+       &lt;filename_prefix&gt;%Y-%m-%d_%H:%M:%S&lt;/filename_prefix&gt;
+       &lt;!-- Расширение имени файла --&gt;
+       &lt;filename_suffix&gt;mp2&lt;/filename_suffix&gt;
+</pre>
+<p>    
+</p>
+<pre>       &lt;!-- Формат аудиофайлов --&gt;
+       &lt;output_format&gt;mp2&lt;/output_format&gt;
+       &lt;!-- Битрейт аудиофайлов --&gt;
+       &lt;audio_bitrate&gt;256k&lt;/audio_bitrate&gt;
+       &lt;/xml&gt;
+</pre>
+<p></p>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">305 </span><strong>SETTINGS</strong><span class="sign">=</span><span class="quote">"$1"</span>
+</pre>
+
+<hr />
+<a name="streamsaver2fmain"></a>
+<a name="robo7"></a><h2>streamsaver/main [ Toplevel ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">streamsaver</a> ] [ <a href="./tobo_toplevel.html#robo_top_of_doc">Toplevel</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <a href="#robo0">streamsaver</a>
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">316 </span><span class="comment">#Проверка на наличие файла настроек</span>
+<span class="line_number">317 </span><span class="keyword">if</span> <span class="sign">[</span> <span class="sign">-</span>z <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span> <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
+<span class="line_number">318 </span>        <span class="keyword">echo</span> <span class="quote">"USAGE: $(basename $0) &lt;settings.xml&gt;"</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
+<span class="line_number">319 </span>        <span class="keyword">exit</span> 1
+<span class="line_number">320 </span><span class="keyword">elif</span> <span class="sign">[</span> <span class="keyword">!</span> <span class="sign">-</span>r <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span> <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
+<span class="line_number">321 </span>        <span class="keyword">echo</span> <span class="quote">"Unable open file $1."</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
+<span class="line_number">322 </span>        <span class="keyword">echo</span> <span class="quote">"USAGE: $(basename $0) &lt;settings.xml&gt;"</span> <span class="sign">&gt;</span><span class="sign">&amp;</span>2
+<span class="line_number">323 </span>        <span class="keyword">exit</span> 1
+<span class="line_number">324 </span><span class="keyword">fi</span>
+<span class="line_number">325 </span>
+<span class="line_number">326 </span><span class="comment">#Чтение настроек</span>
+<span class="line_number">327 </span><a href="#robo3">readXML</a> <span class="quote">"$<a href="#robo6">SETTINGS</a>"</span>
+<span class="line_number">328 </span>
+<span class="line_number">329 </span><span class="comment">#Создание директорий хранения файлов, если требуется</span>
+<span class="line_number">330 </span><span class="keyword">mkdir</span> <span class="sign">-</span>p <span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>archive_dir<span class="sign">]</span><span class="keyword">}</span>
+<span class="line_number">331 </span><span class="keyword">mkdir</span> <span class="sign">-</span>p <span class="sign">$</span><span class="sign">{</span><a href="#robo5">config</a><span class="sign">[</span>slices_dir<span class="sign">]</span><span class="keyword">}</span>
+<span class="line_number">332 </span>
+<span class="line_number">333 </span><span class="comment">#Создание команды оцифровки сигнала</span>
+<span class="line_number">334 </span><a href="#robo4">makeCMD</a>
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./streamsaver with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.41 on Tue Jul 12 2016 14:44:43
+</p>
+</div> <!-- footer -->
+</body>
+</html>
