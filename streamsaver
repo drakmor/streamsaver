@@ -172,7 +172,7 @@ readXML() {
 #
 makeCMD() {
 	#Правило именования файлов
-	FILE_NAME="${config[filename_prefix]}-${config[channel_name]}-${config[channel_number]}.${config[filename_suffix]}"
+	FILE_NAME="${config[filename_prefix]}-${config[channel_name]}-CH${config[channel_number]}.${config[filename_suffix]}"
 
 	#Минимальная команда
 	CMD="${config[cmd]} -i ${config[stream]} -f ${config[output_format]}"
