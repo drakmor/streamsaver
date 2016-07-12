@@ -271,6 +271,8 @@ config=(
 #    	<password>hackme</password>
 #    	<!-- Точка подключения канала -->
 #    	<mountpoint>tuc02</mountpoint>
+#       <!-- Программа/канал из потока -->
+#       <input_channel>0:p:4098</input_channel>
 #    
 #    	<!-- Команда получения сигнала -->
 #    	<cmd>ffmpeg</cmd>
