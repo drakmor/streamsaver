@@ -248,8 +248,8 @@ typeset -A config
 
 config=(
 	[stream]=""
-	[icecast]="http://localhost:8000/"
-	[password]="hackme"
+	[icecast]=""
+	[password]=""
 	[channel_name]=""
 	[channel_number]=""
 	[channel_descr]=""
