@@ -125,7 +125,7 @@ readXML() {
 #           -segment_list_type "csv" \
 #           -segment_list_flags "live" \
 #           -segment_atclocktime 1 \
-#              -acodec "$FORMAT" -map 0  -f segment \
+#              -acodec "$FORMAT" -f segment \
 #              -segment_time   "$ARCHIVE_TIME" \
 #              -segment_format "$FORMAT" \
 #              -strftime 1     "$ARCHIVE_DIR/$FILE_NAME"
@@ -135,7 +135,7 @@ readXML() {
 #           -segment_list_type "csv" \
 #           -segment_list_flags "live" \
 #           -segment_atclocktime 1 \
-#              -acodec "$FORMAT" -map 0  -f segment \
+#              -acodec "$FORMAT" -f segment \
 #              -segment_time   "$SLICES_TIME" \
 #              -segment_format "$FORMAT" \
 #              -strftime 1     "$SLICES_DIR/$FILE_NAME"
@@ -150,13 +150,13 @@ makeCMD() {
 	FILE_NAME="${config[filename_prefix]}-${config[channel_name]}.${config[filename_suffix]}"
 
 	#Минимальная команда
-	CMD="${config[cmd]} -reconnect 1 -i ${config[stream]} -f mp2"
-	# " -f ${config[input_format]}"
+	CMD="${config[cmd]} -i ${config[stream]} -f ${config[output_format]}"
 
 	#КОДИРОВАНИЕ
 	# enableOption output_format -c %%
 
 	#ICECAST
+	enableOption input_channel -map %%
 	enableOption channel_name \
 		-legacy_icecast 1 \
 		-content_type audio/mpeg \
@@ -169,6 +169,7 @@ makeCMD() {
 		icecast://source:${config[password]}@${config[icecast]}/${config[mountpoint]}
 
 	# АРХИВ
+	enableOption input_channel -map %%
 	enableOption archive_log \
 		-segment_list %% \
 		-segment_list_entry_prefix "${config[archive_dir]}" \
@@ -178,13 +179,14 @@ makeCMD() {
 	# +СЕГМЕНТИРОВАНИЕ
 	enableOption archive_dir \
 		-segment_atclocktime 1 \
-		-acodec "${config[output_format]}" -map 0 \
+		-acodec "${config[output_format]}" \
 		-f segment \
 		-segment_time   "${config[archive_time]}" \
 		-segment_format "${config[output_format]}" \
 		-strftime 1     "${config[archive_dir]}/$FILE_NAME"
 
 	# АНАЛИЗ
+	enableOption input_channel -map %%
 	enableOption slices_log \
 		-segment_list %% \
 		-segment_list_entry_prefix "${config[slices_dir]}" \
@@ -194,7 +196,7 @@ makeCMD() {
 	# +СЕГМЕНТИРОВАНИЕ
 	enableOption slices_dir \
 		-segment_atclocktime 1 \
-		-acodec "${config[output_format]}" -map 0 \
+		-acodec "${config[output_format]}" \
 		-f segment \
 		-segment_time   "${config[slices_time]}" \
 		-segment_format "${config[output_format]}" \
@@ -228,6 +230,7 @@ config=(
 	[mountpoint]=""
 	[cmd]="ffmpeg"
 	[input_format]="mpegts"
+	[input_channel]="0"
 	[archive_dir]=""
 	[archive_time]="3600"
 	[archive_log]="/var/log/tuc01_archive.log"
@@ -334,4 +337,3 @@ mkdir -p ${config[slices_dir]}
 makeCMD
 
 #*****
-
