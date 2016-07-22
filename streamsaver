@@ -182,6 +182,7 @@ makeCMD() {
 
 	#ICECAST
 	enableOption input_channel -map %%
+	enableOption audio_bitrate -ab %%
 	enableOption channel_name \
 		-legacy_icecast 1 \
 		-content_type audio/mpeg \
