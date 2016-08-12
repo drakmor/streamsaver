@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<title>./streamproxy</title>
+<!-- Source: ./streamproxy -->
+<!-- Generated with ROBODoc Version 4.99.41 (Jul  2 2011) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc"></a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./robo_sourcefiles.html#top">Sourcefiles</a>
+<a class="menuitem" href="./masterindex.html#top">Index</a>
+<a class="menuitem" href="./robo_files.html#top">Files</a>
+<a class="menuitem" href="./robo_functions.html#top">Functions</a>
+<a class="menuitem" href="./tobo_toplevel.html#top">Toplevel</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<hr />
+<a name="ffmpeg2fstreamproxy"></a>
+<a name="robo8"></a><h2>ffmpeg/streamproxy [ Files ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_files.html#robo_top_of_doc">Files</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <strong>streamproxy</strong> - проксирование аудиопотока на Icecast
+</pre>
+<p class="item_name">VERSION</p>
+<pre>    1.0
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<p>    Сценарий принимает аудиопоток с оборудования, по UDP или TCP,
+    и ретранслирует поток на сервер радиовещания icecast для
+    получения сигнала другими программами и прослушивания аудио конечным
+    пользователем.
+</p>
+
+<p>    Проксирование будет доступно только при задании в файле настроек опции
+    &lt;proxy&gt;1&lt;/proxy&gt;
+</p>
+
+<p></p>
+<p class="item_name">USAGE</p>
+<pre>    <strong>streamproxy</strong> &lt;файл настроек&gt;
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<ul><li>    &lt;файл настроек&gt; - xml-файл с описанием входящего и выходящего потоков и
+      правилами фрагментирования записей.
+</li>
+</ul>
+<p></p>
+
+<hr />
+<a name="streamproxy2freadXML"></a>
+<a name="robo9"></a><h2>streamproxy/readXML [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">streamproxy</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <strong>readXML</strong> - получение значения опции из файла настроек
+</pre>
+<p class="item_name">USAGE</p>
+<pre>    <strong>readXML</strong> &lt;опция&gt; &lt;файл&gt;
+</pre>
+<p class="item_name">ARGUMENTS</p>
+<ul><li>    опция - имя опции
+</li>
+<li>    файл - xml-файл с настройками
+</li>
+</ul>
+<p></p>
+<p class="item_name">RESULT</p>
+<pre>    Значение параметра при наличии искомой опции в xml-файле или значение по
+    умолчанию, которое задаётся при инициализации переменной <a href="./streamsaver.html#robo5">config</a>.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">72 </span><strong>readXML</strong><span class="sign">(</span><span class="sign">)</span> <span class="keyword">{</span>
+<span class="line_number">73 </span>        <span class="sign">\</span><span class="keyword">grep</span> <span class="sign">-</span>oPm1 <span class="quote">"(?&lt;=&lt;$1&gt;)[^&lt;]+"</span> <span class="quote">"$2"</span>
+<span class="line_number">74 </span><span class="keyword">}</span>
+</pre>
+
+<hr />
+<a name="streamproxy2fproxyCMD"></a>
+<a name="robo10"></a><h2>streamproxy/proxyCMD [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">streamproxy</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <strong>proxyCMD</strong> - создание команды для передачи аудиопотока
+</pre>
+<p class="item_name">DESCRIPTION</p>
+<p>    Процедура составляет команду ffmpeg на основе конфигурационного файла
+</p>
+<p class="item_name">RESULT</p>
+<pre>    Команда ffmpeg, которую можно передать на выполнение.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number"> 90 </span><strong>proxyCMD</strong><span class="sign">(</span><span class="sign">)</span> <span class="keyword">{</span>
+<span class="line_number"> 91 </span>        STREAM<span class="sign">=</span><span class="sign">$</span><span class="sign">(</span><a href="#robo9">readXML</a> stream <span class="quote">"$XML"</span><span class="sign">)</span>
+<span class="line_number"> 92 </span>        ICECAST<span class="sign">=</span><span class="quote">"$(<a href="#robo9">readXML</a> icecast $XML)/$(<a href="#robo9">readXML</a> mountpoint $XML)"</span>
+<span class="line_number"> 93 </span>        ICENAME<span class="sign">=</span><span class="quote">"$(<a href="#robo9">readXML</a> channel_name $XML)"</span>
+<span class="line_number"> 94 </span>        ICEDESC<span class="sign">=</span><span class="quote">"$(<a href="#robo9">readXML</a> channel_descr $XML)"</span>
+<span class="line_number"> 95 </span>        FORMAT<span class="sign">=</span><span class="quote">"$(<a href="#robo9">readXML</a> input_format $XML)"</span>
+<span class="line_number"> 96 </span>
+<span class="line_number"> 97 </span>        <span class="keyword">echo</span> <span class="keyword">ffmpeg</span> <span class="sign">-</span>i <span class="quote">"$STREAM"</span> <span class="sign">\</span>
+<span class="line_number"> 98 </span>                <span class="sign">-</span><span class="keyword">fi</span> <span class="quote">"$FORMAT"</span> <span class="sign">\</span>
+<span class="line_number"> 99 </span>                <span class="sign">-</span>legacy_icecast 1 <span class="sign">\</span>
+<span class="line_number">100 </span>                <span class="sign">-</span>content_type audio<span class="sign">/</span>mpeg <span class="sign">\</span>
+<span class="line_number">101 </span>                <span class="sign">-</span>ice_name <span class="quote">"$ICENAME"</span> <span class="sign">\</span>
+<span class="line_number">102 </span>                <span class="sign">-</span>ice_description <span class="quote">"$ICEDESC"</span> <span class="sign">\</span>
+<span class="line_number">103 </span>                icecast<span class="sign">:</span><span class="sign">/</span><span class="sign">/</span>source<span class="sign">:</span><span class="sign">$</span>ICECAST
+<span class="line_number">104 </span><span class="keyword">}</span>
+</pre>
+
+<hr />
+<a name="streamproxy2fmain"></a>
+<a name="robo11"></a><h2>streamproxy/main [ Toplevel ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">streamproxy</a> ] [ <a href="./tobo_toplevel.html#robo_top_of_doc">Toplevel</a> ]</p>
+<p class="item_name">NAME</p>
+<pre>    <a href="#robo8">streamproxy</a>
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="line_number">115 </span><span class="comment">#Проверка аргументов</span>
+<span class="line_number">116 </span><span class="keyword">if</span> <span class="sign">[</span> <span class="sign">-</span>z <span class="sign">$</span>1 <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
+<span class="line_number">117 </span>        <span class="keyword">echo</span> <span class="quote">"USAGE: $0 &lt;xml&gt;"</span>
+<span class="line_number">118 </span>        <span class="keyword">exit</span> 1
+<span class="line_number">119 </span><span class="keyword">fi</span>
+<span class="line_number">120 </span>
+<span class="line_number">121 </span><span class="comment">#Файл настроек</span>
+<span class="line_number">122 </span>XML<span class="sign">=</span><span class="quote">"$1"</span>
+<span class="line_number">123 </span>
+<span class="line_number">124 </span><span class="comment">#Проверка использования прокси</span>
+<span class="line_number">125 </span>PROXY<span class="sign">=</span><span class="sign">$</span><span class="sign">(</span><a href="#robo9">readXML</a> proxy <span class="quote">"$XML"</span><span class="sign">)</span>
+<span class="line_number">126 </span>
+<span class="line_number">127 </span><span class="keyword">if</span> <span class="sign">[</span> <span class="quote">"$PROXY"</span> <span class="sign">=</span><span class="sign">=</span> 1 <span class="sign">]</span><span class="sign">;</span> <span class="keyword">then</span>
+<span class="line_number">128 </span>        <a href="#robo10">proxyCMD</a>
+<span class="line_number">129 </span><span class="keyword">fi</span>
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./streamproxy with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.41 on Fri Aug 12 2016 16:44:43
+</p>
+</div> <!-- footer -->
+</body>
+</html>
