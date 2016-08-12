@@ -118,6 +118,7 @@ ignore files:
     *~
 accept files:
     streamsaver
+    streamproxy
 header markers:
     #****
 remark markers:
