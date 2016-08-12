@@ -17,6 +17,41 @@
 #    Проксирование будет доступно только при задании в файле настроек опции
 #    <proxy>1</proxy>
 #
+#    |dot start
+#      digraph G {
+#      	subgraph cluster_0 {
+#      		style=filled;
+#      		color=lightgrey;
+#      		node [style=filled,color=white];
+#      		UDP -> ICECAST;
+#      		label = "streamproxy";
+#      	}
+#      
+#      	subgraph cluster_1 {
+#      		node [style=filled];
+#      		ПХАС;
+#      		label = "streamsaver";
+#      		color=blue
+#      		ПХАС [shape=tab];
+#      	}
+#      
+#      	subgraph cluster_2 {
+#      		style=filled;
+#      		color=lightblue;
+#      		node [style=filled,color=white];
+#      		"Сигнал тишины";
+#      		label = "iceloop";
+#      	}
+#      
+#      	"Сигнал тишины" -> ICECAST;
+#      	ICECAST -> ПХАС;
+#      	ICECAST -> "WEB-сервис";
+#      	ПХАС -> "WEB-сервис";
+#      
+#      	UDP [shape=Mdiamond];
+#      }
+#    |dot end
+#
 # USAGE
 #    streamproxy <файл настроек>
 #
