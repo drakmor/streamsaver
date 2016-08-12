@@ -181,18 +181,20 @@ makeCMD() {
 	# enableOption output_format -c %%
 
 	#ICECAST
-	enableOption input_channel -map %%
-	enableOption audio_bitrate -ab %%
-	enableOption channel_name \
-		-legacy_icecast 1 \
-		-content_type audio/mpeg \
-		-ice_name %%
+	if [ ! -z ${config[icecast]} ]; then
+		enableOption input_channel -map %%
+		enableOption audio_bitrate -ab %%
+		enableOption channel_name \
+			-legacy_icecast 1 \
+			-content_type audio/mpeg \
+			-ice_name %%
 
-	enableOption channel_descr \
-		-ice_description %%
+		enableOption channel_descr \
+			-ice_description %%
 
-	enableOption icecast \
-		icecast://source:${config[password]}@${config[icecast]}/${config[mountpoint]}
+		enableOption icecast \
+			icecast://source:${config[password]}@${config[icecast]}/${config[mountpoint]}
+	fi
 
 	# АРХИВ
 	enableOption input_channel -map %%
@@ -248,6 +250,7 @@ makeCMD() {
 typeset -A config
 
 config=(
+	[proxy]="0"
 	[stream]=""
 	[icecast]=""
 	[password]=""
@@ -256,7 +259,7 @@ config=(
 	[channel_descr]=""
 	[mountpoint]=""
 	[cmd]="ffmpeg"
-	[input_format]="mpegts"
+	[input_format]=""
 	[input_channel]=""
 	[archive_dir]=""
 	[archive_time]=""
@@ -265,8 +268,8 @@ config=(
 	[slices_time]=""
 	[slices_log]=""
 	[filename_prefix]="%Y-%m-%d_%H:%M:%S"
-	[filename_suffix]="mp2"
-	[output_format]="mp2"
+	[filename_suffix]="mp3"
+	[output_format]="mp3"
 	[audio_bitrate]="256k"
 )
 #*****
@@ -330,6 +333,8 @@ config=(
 #    	<output_format>mp2</output_format>
 #    	<!-- Битрейт аудиофайлов -->
 #    	<audio_bitrate>256k</audio_bitrate>
+#       <!-- Использование streamproxy -->
+#       <proxy>1</proxy>
 #       </xml>
 #
 # SOURCE
@@ -362,7 +367,13 @@ readXML "$SETTINGS"
 mkdir -p ${config[archive_dir]}
 mkdir -p ${config[slices_dir]}
 
+if [ ${config[proxy]} == 1 ]; then
+	config[stream]="${config[icecast]}/${config[mountpoint]}"
+	config[icecast]=""
+fi
+
 #Создание команды оцифровки сигнала
-makeCMD
+makeCMD | sh
 
 #*****
+

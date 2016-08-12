@@ -39,4 +39,6 @@
 	<output_format>mp2</output_format>
 	<!-- Битрейт аудиофайлов -->
 	<audio_bitrate>256k</audio_bitrate>
+	<!-- Использование streamproxy -->
+	<proxy>1</proxy>
 </xml>

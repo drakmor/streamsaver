@@ -1,0 +1,106 @@
+#!/bin/bash
+
+#****F* ffmpeg/streamproxy ****************************************************
+#
+# NAME
+#    streamproxy - проксирование аудиопотока на Icecast
+#
+# VERSION
+#    1.0
+#
+# DESCRIPTION
+#    Сценарий принимает аудиопоток с оборудования, по UDP или TCP,
+#    и ретранслирует поток на сервер радиовещания icecast для
+#    получения сигнала другими программами и прослушивания аудио конечным
+#    пользователем.
+#
+#    Проксирование будет доступно только при задании в файле настроек опции
+#    <proxy>1</proxy>
+#
+# USAGE
+#    streamproxy <файл настроек>
+#
+# ARGUMENTS
+#    * <файл настроек> - xml-файл с описанием входящего и выходящего потоков и
+#      правилами фрагментирования записей.
+#
+#******************************************************************************
+
+#****f* streamproxy/readXML
+#
+# NAME
+#    readXML - получение значения опции из файла настроек
+#
+# USAGE
+#    readXML <опция> <файл>
+#
+# ARGUMENTS
+#    * опция - имя опции
+#    * файл - xml-файл с настройками
+#
+# RESULT
+#    Значение параметра при наличии искомой опции в xml-файле или значение по
+#    умолчанию, которое задаётся при инициализации переменной config.
+#
+# SOURCE
+#
+readXML() {
+	\grep -oPm1 "(?<=<$1>)[^<]+" "$2"
+}
+#*****
+
+#****f* streamproxy/proxyCMD
+#
+# NAME
+#    proxyCMD - создание команды для передачи аудиопотока
+#
+# DESCRIPTION
+#    Процедура составляет команду ffmpeg на основе конфигурационного файла
+#
+# RESULT
+#    Команда ffmpeg, которую можно передать на выполнение.
+#
+# SOURCE
+#
+proxyCMD() {
+	STREAM=$(readXML stream "$XML")
+	ICECAST="$(readXML icecast $XML)/$(readXML mountpoint $XML)"
+	ICENAME="$(readXML channel_name $XML)"
+	ICEDESC="$(readXML channel_descr $XML)"
+	FORMAT="$(readXML input_format $XML)"
+
+	echo ffmpeg -i "$STREAM" \
+		-f "$FORMAT" \
+		-legacy_icecast 1 \
+		-content_type audio/mpeg \
+		-ice_name "$ICENAME" \
+		-ice_description "$ICEDESC" \
+		icecast://source:$ICECAST
+}
+#*****
+
+#****t* streamproxy/main
+#
+# NAME
+#    streamproxy
+#
+# SOURCE
+#
+
+#Проверка аргументов
+if [ -z $1 ]; then
+	echo "USAGE: $0 <xml>"
+	exit 1
+fi
+
+#Файл настроек
+XML="$1"
+
+#Проверка использования прокси
+PROXY=$(readXML proxy "$XML")
+
+if [ "$PROXY" == 1 ]; then
+	proxyCMD
+fi
+#*****
+
