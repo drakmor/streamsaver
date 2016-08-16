@@ -368,7 +368,10 @@ mkdir -p ${config[archive_dir]}
 mkdir -p ${config[slices_dir]}
 
 if [ ${config[proxy]} == 1 ]; then
-	config[stream]="${config[icecast]}/${config[mountpoint]}"
+	config[stream]="http://${config[icecast]}/${config[mountpoint]}"
+	config[input_format]="${config[output_format]}"
+	config[output_format]="copy"
+	config[input_channel]=""
 	config[icecast]=""
 fi
 

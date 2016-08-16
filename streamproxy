@@ -19,36 +19,36 @@
 #
 #    |dot start
 #      digraph G {
-#      	subgraph cluster_0 {
-#      		style=filled;
-#      		color=lightgrey;
-#      		node [style=filled,color=white];
-#      		UDP -> ICECAST;
-#      		label = "streamproxy";
-#      	}
+#       subgraph cluster_0 {
+#               style=filled;
+#               color=lightgrey;
+#               node [style=filled,color=white];
+#               UDP -> ICECAST;
+#               label = "streamproxy";
+#       }
 #      
-#      	subgraph cluster_1 {
-#      		node [style=filled];
-#      		ПХАС;
-#      		label = "streamsaver";
-#      		color=blue
-#      		ПХАС [shape=tab];
-#      	}
+#       subgraph cluster_1 {
+#               node [style=filled];
+#               ПХАС;
+#               label = "streamsaver";
+#               color=blue
+#               ПХАС [shape=tab];
+#       }
 #      
-#      	subgraph cluster_2 {
-#      		style=filled;
-#      		color=lightblue;
-#      		node [style=filled,color=white];
-#      		"Сигнал тишины";
-#      		label = "iceloop";
-#      	}
+#       subgraph cluster_2 {
+#               style=filled;
+#               color=lightblue;
+#               node [style=filled,color=white];
+#               "Сигнал тишины";
+#               label = "iceloop";
+#       }
 #      
-#      	"Сигнал тишины" -> ICECAST;
-#      	ICECAST -> ПХАС;
-#      	ICECAST -> "WEB-сервис";
-#      	ПХАС -> "WEB-сервис";
+#       "Сигнал тишины" -> ICECAST;
+#       ICECAST -> ПХАС;
+#       ICECAST -> "WEB-сервис";
+#       ПХАС -> "WEB-сервис";
 #      
-#      	UDP [shape=Mdiamond];
+#       UDP [shape=Mdiamond];
 #      }
 #    |dot end
 #
@@ -80,7 +80,7 @@
 # SOURCE
 #
 readXML() {
-	\grep -oPm1 "(?<=<$1>)[^<]+" "$2"
+        \grep -oPm1 "(?<=<$1>)[^<]+" "$2"
 }
 #*****
 
@@ -98,19 +98,23 @@ readXML() {
 # SOURCE
 #
 proxyCMD() {
-	STREAM=$(readXML stream "$XML")
-	ICECAST="$(readXML icecast $XML)/$(readXML mountpoint $XML)"
-	ICENAME="$(readXML channel_name $XML)"
-	ICEDESC="$(readXML channel_descr $XML)"
-	FORMAT="$(readXML input_format $XML)"
+        STREAM=$(readXML stream "$XML")
+        ICECAST="$(readXML icecast $XML)/$(readXML mountpoint $XML)"
+        ICENAME="$(readXML channel_name $XML)"
+        ICEDESC="$(readXML channel_descr $XML)"
+        ICEPASS="$(readXML password $XML)"
+        FORMAT_IN="$(readXML input_format $XML)"
+        FORMAT_OUT="$(readXML output_format $XML)"
 
-	echo ffmpeg -i "$STREAM" \
-		-f "$FORMAT" \
-		-legacy_icecast 1 \
-		-content_type audio/mpeg \
-		-ice_name "$ICENAME" \
-		-ice_description "$ICEDESC" \
-		icecast://source:$ICECAST
+        echo ffmpeg \
+                -f "$FORMAT_IN" \
+                -i "$STREAM" \
+                -f "$FORMAT_OUT" \
+                -legacy_icecast 1 \
+                -content_type audio/mpeg \
+                -ice_name "$ICENAME" \
+                -ice_description "$ICEDESC" \
+                icecast://source:$ICEPASS@$ICECAST
 }
 #*****
 
@@ -124,8 +128,8 @@ proxyCMD() {
 
 #Проверка аргументов
 if [ -z $1 ]; then
-	echo "USAGE: $0 <xml>"
-	exit 1
+        echo "USAGE: $0 <xml>"
+        exit 1
 fi
 
 #Файл настроек
@@ -135,7 +139,7 @@ XML="$1"
 PROXY=$(readXML proxy "$XML")
 
 if [ "$PROXY" == 1 ]; then
-	proxyCMD
+        proxyCMD
 fi
 #*****
 
