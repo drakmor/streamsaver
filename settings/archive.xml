@@ -10,7 +10,7 @@
 	<!-- Формат входного потока -->
 	<input_format>s16le</input_format>
 	<!-- Директория для сохранения архивных файлов -->
-	<archive_dir>/tmp/RT/FILES/archive/DAB02/CH01/</archive_dir>
+	<archive_dir>/tmp/RT/FILES/archive/$DATE/DAB02/CH01/</archive_dir>
 	<!-- Длительность архивных файлов в секундах -->
 	<archive_time>3600</archive_time>
 	<!-- Файл журнала обработки архивных записей -->

@@ -200,7 +200,7 @@ makeCMD() {
 	enableOption input_channel -map %%
 	enableOption archive_log \
 		-segment_list %% \
-		-segment_list_entry_prefix "${config[archive_dir]}" \
+		-segment_list_entry_prefix "$(eval echo ${config[archive_dir]})" \
 		-segment_list_type csv \
 		-segment_list_flags live
 
@@ -211,13 +211,13 @@ makeCMD() {
 		-f segment \
 		-segment_time   "${config[archive_time]}" \
 		-segment_format "${config[output_format]}" \
-		-strftime 1     "${config[archive_dir]}/$FILE_NAME"
+		-strftime 1     "$(eval echo ${config[archive_dir]})/$FILE_NAME"
 
 	# АНАЛИЗ
 	enableOption input_channel -map %%
 	enableOption slices_log \
 		-segment_list %% \
-		-segment_list_entry_prefix "${config[slices_dir]}" \
+		-segment_list_entry_prefix "$(eval echo ${config[slices_dir]})" \
 		-segment_list_type csv \
 		-segment_list_flags live
 
@@ -228,7 +228,7 @@ makeCMD() {
 		-f segment \
 		-segment_time   "${config[slices_time]}" \
 		-segment_format "${config[output_format]}" \
-		-strftime 1     "${config[slices_dir]}/$FILE_NAME"
+		-strftime 1     "$(eval echo ${config[slices_dir]})/$FILE_NAME"
 
 	echo "$CMD"
 }
@@ -311,6 +311,7 @@ config=(
 #    	<input_format>mp2 -map 0:0</input_format>
 #    
 #    	<!-- Директория для сохранения архивных файлов -->
+#    	<!-- Может содержать переменную $DATA (текущую дату) -->
 #    	<archive_dir>FILES/archive/</archive_dir>
 #    	<!-- Длительность архивных файлов в секундах -->
 #    	<archive_time>3600</archive_time>
@@ -363,10 +364,21 @@ fi
 #Чтение настроек
 readXML "$SETTINGS"
 
-#Создание директорий хранения файлов, если требуется
-mkdir -p ${config[archive_dir]}
-mkdir -p ${config[slices_dir]}
+#Текущая дата
+DATE="$(\date +%F)"
 
+#Создание директорий хранения файлов за текущую дату, если требуется
+[ ! -z ${config[archive_dir]} ] && mkdir -p "$(eval echo ${config[archive_dir]})"
+[ ! -z ${config[slices_dir]}  ] && mkdir -p "$(eval echo ${config[slices_dir]})"
+
+#Дата следующего дня
+DATE="$(\date --date='tomorrow' +%F)"
+
+#Создание директорий хранения файлов на следующий день
+[ ! -z ${config[archive_dir]} ] && mkdir -p "$(eval echo ${config[archive_dir]})"
+[ ! -z ${config[slices_dir]}  ] && mkdir -p "$(eval echo ${config[slices_dir]})"
+
+#Если используется прокси, то сигнал будет приниматься с соответствующего Icecast
 if [ ${config[proxy]} == 1 ]; then
 	config[stream]="http://${config[icecast]}/${config[mountpoint]}"
 	config[input_format]="${config[output_format]}"
@@ -376,7 +388,7 @@ if [ ${config[proxy]} == 1 ]; then
 fi
 
 #Создание команды оцифровки сигнала
-makeCMD | sh
+makeCMD
 
 #*****
 
