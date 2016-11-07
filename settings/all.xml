@@ -6,7 +6,7 @@
 	<!-- Описание канала -->
 	<channel_descr>Test_channel_#4</channel_descr>
 	<!-- Входящий поток  -->
-	<stream>udp://@224.20.0.1:1234</stream>
+	<stream>udp://@1.1.0.1:1234</stream>
 	<!-- Icecast для вывода -->
 	<icecast>localhost:8000</icecast>
 	<!-- Пароль для доступа к Icecast -->
@@ -20,17 +20,17 @@
 	<!-- Программа/канал из потока -->
 	<input_channel>p:4098</input_channel>
 	<!-- Директория для сохранения архивных файлов -->
-	<archive_dir>/tmp/RT/FILES/archive/TK04/CH4098/</archive_dir>
+	<archive_dir>/FILES/archive/TK04/CH4098/</archive_dir>
 	<!-- Длительность архивных файлов в секундах -->
 	<archive_time>3600</archive_time>
 	<!-- Файл журнала обработки архивных записей -->
-	<archive_log>/tmp/RT/FILES/tk04_ch4098.archive.log</archive_log>
+	<archive_log>/FILES/tk04_ch4098.archive.log</archive_log>
 	<!-- Директория для сохранения фрагментов на анализ -->
-	<slices_dir>/tmp/RT/FILES/fragments/TK04/CH4098/</slices_dir>
+	<slices_dir>/FILES/fragments/TK04/CH4098/</slices_dir>
 	<!-- Длительность фрагментов для анализа в секундах -->
 	<slices_time>10</slices_time>
 	<!-- Файл журнала обработки фрагментов на анализ -->
-	<slices_log>/tmp/RT/FILES/tk04_ch4098.fragments.log</slices_log>
+	<slices_log>/FILES/tk04_ch4098.fragments.log</slices_log>
 	<!-- Префикс имени файла -->
 	<filename_prefix>%Y-%m-%d_%H:%M:%S</filename_prefix>
 	<!-- Расширение имени файла -->

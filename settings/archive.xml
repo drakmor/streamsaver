@@ -1,6 +1,6 @@
 <xml>
 	<!-- Название канала -->
-	<channel_name>DAB#2</channel_name>
+	<channel_name>FM#2</channel_name>
 	<!-- Номер канала -->
 	<channel_number>01</channel_number>
 	<!-- Входящий поток  -->
@@ -10,11 +10,11 @@
 	<!-- Формат входного потока -->
 	<input_format>s16le</input_format>
 	<!-- Директория для сохранения архивных файлов -->
-	<archive_dir>/tmp/RT/FILES/archive/$DATE/DAB02/CH01/</archive_dir>
+	<archive_dir>/FILES/archive/$DATE/DAB02/CH01/</archive_dir>
 	<!-- Длительность архивных файлов в секундах -->
 	<archive_time>3600</archive_time>
 	<!-- Файл журнала обработки архивных записей -->
-	<archive_log>/tmp/RT/FILES/dab_ch01.archive.log</archive_log>
+	<archive_log>/FILES/dab_ch01.archive.log</archive_log>
 	<!-- Префикс имени файла -->
 	<filename_prefix>%Y-%m-%d_%H:%M:%S</filename_prefix>
 	<!-- Расширение имени файла -->
