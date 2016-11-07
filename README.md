@@ -41,55 +41,55 @@
 
 ##Файл настроек
    ```xml
-      <xml>
-	<!-- Название канала -->
-   	<channel_name></channel_name>
-   	<!-- Описание канала -->
-   	<channel_descr>Тестовый_канал</channel_descr>
-   	<!-- Входящий поток  -->
-   	<stream>http://localhost:8000/stream</stream>
-   	<!-- Icecast для вывода -->
-   	<icecast>localhost:8000</icecast>
-   	<!-- Пароль для доступа к Icecast -->
-   	<password>hackme</password>
-   	<!-- Точка подключения канала -->
-   	<mountpoint>stream</mountpoint>
-       <!-- Программа/канал из потока -->
-       <input_channel>0:p:4098</input_channel>
-   
-   	<!-- Команда получения сигнала -->
-   	<cmd>ffmpeg</cmd>
-   
-   	<!-- Формат входного потока -->
-   	<input_format>mp2 -map 0:0</input_format>
-   
-   	<!-- Директория для сохранения архивных файлов -->
-   	<!-- Может содержать переменную $DATA (текущую дату) -->
-   	<archive_dir>FILES/archive/</archive_dir>
-   	<!-- Длительность архивных файлов в секундах -->
-   	<archive_time>3600</archive_time>
-   	<!-- Файл журнала обработки архивных записей -->
-   	<archive_log>FILES/archive.log</archive_log>
-   
-   	<!-- Директория для сохранения фрагментов на анализ -->
-   	<slices_dir>FILES/fragments/</slices_dir>
-   	<!-- Длительность фрагментов для анализа в секундах -->
-   	<slices_time>10</slices_time>
-   	<!-- Файл журнала обработки фрагментов на анализ -->
-   	<slices_log>FILES/fragments.log</slices_log>
-   
-   	<!-- Префикс имени файла -->
-   	<filename_prefix>%Y-%m-%d_%H:%M:%S</filename_prefix>
-   	<!-- Расширение имени файла -->
-   	<filename_suffix>mp2</filename_suffix>
-   
-   	<!-- Формат аудиофайлов -->
-   	<output_format>mp2</output_format>
-   	<!-- Битрейт аудиофайлов -->
-   	<audio_bitrate>256k</audio_bitrate>
-       <!-- Использование streamproxy -->
-       <proxy>1</proxy>
-      </xml>
+   <xml>
+     <!-- Название канала -->
+     <channel_name></channel_name>
+     <!-- Описание канала -->
+     <channel_descr>Тестовый_канал</channel_descr>
+     <!-- Входящий поток  -->
+     <stream>http://localhost:8000/stream</stream>
+     <!-- Icecast для вывода -->
+     <icecast>localhost:8000</icecast>
+     <!-- Пароль для доступа к Icecast -->
+     <password>hackme</password>
+     <!-- Точка подключения канала -->
+     <mountpoint>stream</mountpoint>
+     <!-- Программа/канал из потока -->
+     <input_channel>0:p:4098</input_channel>
+  
+     <!-- Команда получения сигнала -->
+     <cmd>ffmpeg</cmd>
+     
+     <!-- Формат входного потока -->
+     <input_format>mp2 -map 0:0</input_format>
+     
+     <!-- Директория для сохранения архивных файлов -->
+     <!-- Может содержать переменную $DATA (текущую дату) -->
+     <archive_dir>FILES/archive/</archive_dir>
+     <!-- Длительность архивных файлов в секундах -->
+     <archive_time>3600</archive_time>
+     <!-- Файл журнала обработки архивных записей -->
+     <archive_log>FILES/archive.log</archive_log>
+     
+     <!-- Директория для сохранения фрагментов на анализ -->
+     <slices_dir>FILES/fragments/</slices_dir>
+     <!-- Длительность фрагментов для анализа в секундах -->
+     <slices_time>10</slices_time>
+     <!-- Файл журнала обработки фрагментов на анализ -->
+     <slices_log>FILES/fragments.log</slices_log>
+     
+     <!-- Префикс имени файла -->
+     <filename_prefix>%Y-%m-%d_%H:%M:%S</filename_prefix>
+     <!-- Расширение имени файла -->
+     <filename_suffix>mp2</filename_suffix>
+     
+     <!-- Формат аудиофайлов -->
+     <output_format>mp2</output_format>
+     <!-- Битрейт аудиофайлов -->
+     <audio_bitrate>256k</audio_bitrate>
+     <!-- Использование streamproxy -->
+     <proxy>1</proxy>
+   </xml>
    ```
 
    При отсутствии параметра или пустом значении соответствующие флаги а
